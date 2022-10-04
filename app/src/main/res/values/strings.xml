@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">Cata Cata</string>
+    <string name="login_com_google">Login com <b>Google</b></string>
+    <string name="n_o_tem_conta_cadastre_se_aqui">Não tem conta? Cadastre-se <b>aqui.</b></string>
+    <string name="logo_do_aplicativo">Logo do aplicativo</string>
+    <string name="senha">Senha</string>
+    <string name="entrar">entrar</string>
+    <string name="ou">ou</string>
+    <string name="linha">___________________</string>
+    <string name="linha2">___________________</string>
+    <string name="login_com_google_logo">Login com google</string>
+    <string name="e_mail">E-mail</string>
+    <string name="checkbox_termos_cadastro">Sim, aceito os <b>termos de serviço</b> incluindo os <b>Acordos de Usuários</b> e a <b>Política de Privacidade</b></string>
+
+    <string name="planet_prompt">Ocupação</string>
+    <string name="confirmar_senha">Confirmar senha</string>
+    <string name="Buttoncadastrar">cadastrar</string>
+    <string name="nome_usuario">Nome</string>
+    <string name="esqueceu_a_senha">Esqueceu a senha?</string>
+    <string name="recupere_agora">Recupere agora</string>
+    <string name="home">Home</string>
+    <string name="contatos">Contatos</string>
+    <string name="agendamento">Agendamento</string>
+    <string name="ajuda">Ajuda</string>
+    <string-array name="planets_array">
+        <item>Catador</item>
+        <item>Morador</item>
+        <item>Cooperativa</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="meus_materiais">Meus \nMateriais</string>
+    <string name="rotas_e_mapas">Rotas \ne Mapas</string>
+    <string name="buscar_coleta">Buscar \nColeta</string>
+    <string name="criarmetas">Criar \nMetas</string>
+    <string name="cota_o">Cotação</string>
+    <string name="educa_o_nambiental">Educação\nAmbiental</string>
+    <string name="info_de_nseguran_a">Info de\nSegurança</string>
+    <string name="minha_nbagagem">Minha \nBagagem</string>
+    <string name="sa_de">Saúde</string>
+    <string name="lista_de_nrecicl_veis">Lista de\nRecicláveis</string>
+    <string name="meu_nhist_rico">Meu \nHistórico</string>
+    <string name="minha_nbbagagem">Minha \nBagagem</string>
+    <string name="buscar_ncoleta">Buscar\nColeta</string>
+    <string name="nomeApp">CataCata</string>
+    <string name="nome_do_usu_rio">Nome do Usuário</string>
+    <string name="usuariocatacata_gmail_com">UsuarioCataCata@gmail.com</string>
+    <string name="sair">Sair</string>
+    <string name="informa_es_do_app">Informações do App</string>
+    <string name="atualizar_foto_de_perfil">Atualizar foto de perfil</string>
+    <string name="equipamentos_de_prote_o_indicados_pela_equipe_catacata">Equipamentos de proteção indicados pela equipe CataCata.</string>
+
+    <string name="capuz">Capuz</string>
+    <string name="capuz_text">Capuz ou balaclava: o capuz serve para garantir a proteção do crânio e pescoço contra riscos de origem térmica, respingos de produtos químicos e trabalhos onde haja riscos com partes giratórias ou móveis de máquinas.</string>
+    <string name="capuz_image">Imagem Capuz</string>
+
+    <string name="oculos">Óculos</string>
+    <string name="oculos_text">Os óculos de proteção são muito importante para proteger os olhos do trabalhador durante determinadas atividades no trabalho. Ele é auxiliar na prevenção de acidentes e doenças na região dos olhos, e contra diversos fatores de risco. São diversos tipos e cores de óculos de proteção.</string>
+    <string name="oculos_image">Imagem oculos</string>
+
+    <string name="protetor_ouvido">Protetor de Ouvido</string>
+    <string name="p_ouvido_text">Equipamento muito importante para os trabalhadores que atuam à beira de grandes estradas e ruas, por exemplo. O protetor auricular é fundamental pois os danos de audição causados pelo trabalho podem vir à longo prazo. Ou seja, devemos tomar as medidas de proteção hoje, para que não seja tarde depois.</string>
+    <string name="p_ouvido_image">Imagem protetor de ouvido</string>
+
+    <string name="mangote"> Manguito </string>
+    <string name="mangote_text">Os manguitos de proteção solar são uma alternativa à proteção dos raios do sol para os braços e as mãos. Os tecidos utilizados pela confecção dessas luvas recebem um tratamento especifico e permanente. O ideal é que sejam bloqueadores de raios UVA e UVB. Cores variadas.</string>
+    <string name="mangote_image">Imagem Mangote</string>
+
+    <string name="luvas"> Luvas </string>
+    <string name="luvas_text">As luvas de segurança garantem a proteção de riscos químicos, biológicos e mecânicos. Cada luva é desenvolvida para um tipo de risco. A Luva de Proteção utilizada pelos profissionais de resíduos sólidos deve oferecer resistência contra cortes e perfurações. </string>
+    <string name="luvas_image">Imagem Luvas</string>
+
+    <string name="botina"> Botina </string>
+    <string name="botina_text">As botinas e as botas de segurança, em especial, são EPIs destinados à proteção dos pés do colaborador em atividades que exponham sua saúde e integridade a riscos abrasivos, escoriantes, biológicos, químicos, cortantes e perfurocortantes, elétricos, entre outros.</string>
+    <string name="botina_image">Imagem Botina</string>
+
+    <string name="creme_protecao"> Creme de Proteção </string>
+    <string name="creme_text">Os Cremes de Proteção são itens muito importantes para proteger a pele do trabalhador. Eles devem ser aplicados antes mesmo do início da atividade, pois funcionam proporcionando uma espécie de fina camada protetora entre a pele do profissional e os agentes agressores.</string>
+    <string name="creme_image">Imagem creme de proteção</string>
+    <string name="descri_o_do_equipamento_de_prote_o_individual">Descrição do equipamento de proteção individual.</string>
+
+</resources>

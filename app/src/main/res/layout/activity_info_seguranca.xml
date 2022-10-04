@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundoPadrao"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/buttonCreme"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/buttonshape_info"
+        android:text="@string/creme_protecao"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBotina"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonBotina"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/buttonshape_info"
+        android:text="@string/botina"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLuvas"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonLuvas"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/buttonshape_info"
+        android:text="@string/luvas"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMangote"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonMangote"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/buttonshape_info"
+        android:text="@string/mangote"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonProtetorOuvido"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar_alternativa" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/equipamentos_de_prote_o_indicados_pela_equipe_catacata"
+        android:textAlignment="center"
+        android:textColor="@color/verdeIcons"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include2" />
+
+    <Button
+        android:id="@+id/buttonOculos"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/buttonshape_info"
+        android:text="@string/oculos"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCapuz"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonProtetorOuvido"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/buttonshape_info"
+        android:text="@string/protetor_ouvido"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonOculos"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonCapuz"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/buttonshape_info"
+        android:text="@string/capuz"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

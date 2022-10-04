@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuHome"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/menuContatos"
+        android:enabled="true"
+        android:icon="@drawable/ic_contatos"
+        android:title="@string/contatos"/>
+    <item
+        android:id="@+id/menuAgendamento"
+        android:enabled="true"
+        android:icon="@drawable/ic_agenda"
+        android:title="@string/agendamento"/>
+    <item
+        android:id="@+id/menuAjuda"
+        android:enabled="true"
+        android:icon="@drawable/ic_ajuda"
+        android:title="@string/ajuda"/>
+
+</menu>

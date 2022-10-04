@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundoPadrao"
+    android:orientation="vertical"
+    tools:context=".activity.activity.PerfilActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageToolbar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="68dp"
+        android:elevation="5dp"
+        android:src="@drawable/padrao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlHardcoded,ImageContrastCheck" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageButton
+        android:id="@+id/imageAlterarFoto"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/atualizar_foto_de_perfil"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.312"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPerfil"
+        app:srcCompat="@drawable/ic_galeria_foto"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/textNomeUsuarioPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="44dp"
+        android:gravity="right"
+        android:paddingRight="40dp"
+        android:text="@string/nome_do_usu_rio"
+        android:textAlignment="center"
+        android:textColor="@color/verdeIcons"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlCompat,RtlHardcoded,RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/textEmailUsuarioLogado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="64dp"
+        android:gravity="right"
+        android:paddingRight="30dp"
+        android:text="@string/usuariocatacata_gmail_com"
+        android:textAlignment="center"
+        android:textColor="@color/verdeIcons"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlCompat,RtlHardcoded,RtlSymmetry" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
