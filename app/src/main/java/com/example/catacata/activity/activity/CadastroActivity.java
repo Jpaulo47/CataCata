@@ -144,7 +144,7 @@ public class CadastroActivity extends AppCompatActivity {
                     }else {
                         progressBarCadastro.setVisibility( View.GONE);
 
-                        String erroExcecao = "";
+                        String erroExcecao;
                         try {
                             throw Objects.requireNonNull(task.getException());
                         }catch (FirebaseAuthWeakPasswordException e){

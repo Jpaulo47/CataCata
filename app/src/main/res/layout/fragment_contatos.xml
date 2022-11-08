@@ -23,4 +23,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/background_caixa_texto"
+        android:backgroundTint="#C1C9B5"
+        android:backgroundTintMode="src_over"
+        android:buttonTint="@color/verdeIcons"
+        android:buttonTintMode="add"
+        android:drawableLeft="@drawable/ic_notifications"
+        android:drawablePadding="10dp"
+        android:drawingCacheQuality="low"
+        android:foregroundTint="@color/verdeIcons"
+        android:foregroundTintMode="src_in"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:text="Receber notificações"
+        android:textColor="#314E1C"
+        android:textSize="16sp"
+        android:thumbTint="@color/verdeIcons"
+        android:thumbTintMode="src_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,6 +25,7 @@
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/background_splash.xml" value="0.1695" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/background_texto.xml" value="0.1695" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/button_background.xml" value="0.11" />
+        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/button_background_perfil.xml" value="0.1775" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/button_pesquisa_coleta.xml" value="0.1" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/buttonshape.xml" value="0.1" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/buttonshape2.xml" value="0.1" />
@@ -34,6 +35,7 @@
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/catacata2_01_01_02.xml" value="0.1" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_agenda.xml" value="0.171" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_ajuda.xml" value="0.171" />
+        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_avancar.xml" value="0.1775" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_bagagem.xml" value="0.178" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.171" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_contatos.xml" value="0.1" />
@@ -43,6 +45,9 @@
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_home.xml" value="0.171" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_lista_reciclaveis.xml" value="0.178" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_mapa.xml" value="0.178" />
+        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_metas.xml" value="0.1775" />
+        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_notifications.xml" value="0.1775" />
+        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_perfil_conta.xml" value="0.1775" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_pesquisa.xml" value="0.178" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_reciclagem.xml" value="0.171" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/ic_reciclaveis.xml" value="0.178" />
@@ -52,13 +57,13 @@
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/splashscreem.xml" value="0.1695" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/vector.xml" value="0.171" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/drawable/vector__3_.xml" value="0.178" />
-        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_cadastro.xml" value="0.18" />
+        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_cadastro.xml" value="0.33" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_detalhes_info.xml" value="0.22" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_info_seguranca.xml" value="0.22" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_meus_materiais.xml" value="0.20833333333333334" />
-        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_perfil.xml" value="0.25" />
+        <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_perfil.xml" value="0.18" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/activity_teste.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/botton_navigation.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/User/Documents/CataCata/app/src/main/res/layout/fragment_agendamento.xml" value="0.20833333333333334" />
