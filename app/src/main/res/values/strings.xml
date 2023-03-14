@@ -78,5 +78,6 @@
     <string name="creme_text">Os Cremes de Proteção são itens muito importantes para proteger a pele do trabalhador. Eles devem ser aplicados antes mesmo do início da atividade, pois funcionam proporcionando uma espécie de fina camada protetora entre a pele do profissional e os agentes agressores.</string>
     <string name="creme_image">Imagem creme de proteção</string>
     <string name="descri_o_do_equipamento_de_prote_o_individual">Descrição do equipamento de proteção individual.</string>
+    <string name="dados_pessoais">Dados Pessoais</string>
 
 </resources>

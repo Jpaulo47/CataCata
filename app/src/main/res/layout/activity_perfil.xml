@@ -96,7 +96,7 @@
         android:drawableEnd="@drawable/ic_avancar"
         android:drawablePadding="5dp"
         android:gravity="center|start"
-        android:text="Dados Pessoais"
+        android:text="@string/dados_pessoais"
         android:textColor="#314E1C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
