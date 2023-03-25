@@ -62,4 +62,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.codesgood:justifiedtextview:1.1.0'
+
+    //SPLASH SCREEN
+    implementation 'androidx.core:core-splashscreen:1.0.0'
 }
