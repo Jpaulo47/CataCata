@@ -1,27 +1,24 @@
 package com.example.catacata.activity.activity
 
+import Notificador.Companion.showToast
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.catacata.R
 import com.example.catacata.activity.helper.Base64Custom
 import com.example.catacata.activity.helper.Configuracaofirebase
 import com.example.catacata.activity.helper.UsuarioFirebase
 import com.example.catacata.activity.model.Usuario
 import com.example.catacata.databinding.ActivityCadastroBinding
-import com.example.catacata.databinding.ActivityLoginBinding
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import java.util.*
+
+/**
+ * Classe Facilitadora para criar Notificações no display do usuário
+ * ela é um wrapper das notificações do Android e um facade para os mesmos
+ */
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -61,33 +58,19 @@ class CadastroActivity : AppCompatActivity() {
                                 cadastrar(usuario!!)
 
                             } else {
-                                Toast.makeText(
-                                    this@CadastroActivity,
-                                    "Aceite nossos termos de serviço e condições de uso para continuar!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showToast("Aceite nossos termos de serviço e condições de uso para continu")
                             }
                         } else {
-                            Toast.makeText(
-                                this@CadastroActivity,
-                                "Suas senhas não são iguais!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showToast("Suas senhas não são iguais!")
                         }
                     } else {
-                        Toast.makeText(
-                            this@CadastroActivity, "Preencha a senha!", Toast.LENGTH_SHORT
-                        ).show()
+                        showToast("Preencha a senha!")
                     }
                 } else {
-                    Toast.makeText(
-                        this@CadastroActivity, "Preencha o E-mail!", Toast.LENGTH_SHORT
-                    ).show()
+                    showToast("Preencha o E-mail!")
                 }
             } else {
-                Toast.makeText(
-                    this@CadastroActivity, "Preencha o nome!", Toast.LENGTH_SHORT
-                ).show()
+                showToast("Preencha o nome!")
             }
         }
     }
@@ -100,15 +83,13 @@ class CadastroActivity : AppCompatActivity() {
             usuario.email, usuario.senha
         ).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val intent = Intent(this@CadastroActivity, MainActivity::class.java).apply {
+                val intent = Intent(this, MainActivity::class.java).apply {
                     putExtra("usuario", usuario)
                 }
                 startActivity(intent)
 
                 binding.progressBarCadastro.visibility = View.GONE
-                Toast.makeText(this@CadastroActivity, "Cadastro com sucesso", Toast.LENGTH_SHORT)
-                    .show()
-
+                showToast("Cadastro com sucesso")
                 UsuarioFirebase.atualizarNomeUsuario(usuario.nome)
                 finish()
 
@@ -129,8 +110,7 @@ class CadastroActivity : AppCompatActivity() {
                     else -> "Ao cadastrar usuário: ${exception?.message}"
                 }
 
-                Toast.makeText(this@CadastroActivity, "Erro: $erroExcecao", Toast.LENGTH_SHORT)
-                    .show()
+                showToast("Erro: $erroExcecao")
             }
         }
     }
