@@ -1,266 +1,180 @@
-package com.example.catacata.activity.activity;
+package com.example.catacata.activity.activity
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import com.example.catacata.R
+import com.example.catacata.activity.helper.Configuracaofirebase
+import com.example.catacata.activity.model.Usuario
+import com.example.catacata.databinding.ActivityLoginBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.GoogleAuthProvider
+import java.util.Objects
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+class LoginActivity : AppCompatActivity() {
 
-import com.example.catacata.R;
-import com.example.catacata.activity.helper.Configuracaofirebase;
-import com.example.catacata.activity.model.Usuario;
-import com.example.catacata.databinding.ActivityLoginBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.GoogleAuthProvider;
+    private lateinit var usuario: Usuario
+    private lateinit var autenticacao: FirebaseAuth
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var googleSignInClient: GoogleSignInClient
 
-import java.util.Objects;
-
-public class LoginActivity extends AppCompatActivity {
-
-    private EditText campoEmail;
-    private TextView loginGoogle, textRecuperarSenha;
-    private TextInputEditText campoSenha;
-    private Button botaoLogin;
-    private ProgressBar progressBar;
-    private Usuario usuario;
-    private FirebaseAuth autenticacao;
-    ActivityLoginBinding binding;
-    GoogleSignInClient googleSignInClient;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_CataCata);
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        autenticacao = FirebaseAuth.getInstance();
-        verificarUsuarioLogado();
-        inicializarComponentes();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_CataCata)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        autenticacao = FirebaseAuth.getInstance()
+        verificarUsuarioLogado()
 
         //TODO: Ver método para colocar chave no gradle do projeto
         //Método para login com conta google
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
-                GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("778403556608-i66i8ltmjaik8ipseqg2tn6an5bcgmlh.apps.googleusercontent.com")//Token google cloud
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("778403556608-i66i8ltmjaik8ipseqg2tn6an5bcgmlh.apps.googleusercontent.com") //Token google cloud
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         //Fazer login do usuario
-        progressBar.setVisibility( View.INVISIBLE );
-        botaoLogin.setOnClickListener(view -> {
-
-            String textoEmail = campoEmail.getText().toString();
-            String textoSenha = Objects.requireNonNull(campoSenha.getText()).toString();
-
-            if ( !textoEmail.isEmpty()){
-                if ( !textoSenha.isEmpty()){
-
-                    usuario = new Usuario();
-                    usuario.setEmail( textoEmail );
-                    usuario.setSenha( textoSenha );
-                    validarLogin( usuario );
-
-                }else {
-
-                    Toast.makeText(LoginActivity.this,
-                            "Preencha a senha!",
-                            Toast.LENGTH_SHORT).show();
+        binding.progressBarLogin.visibility = View.INVISIBLE
+        binding.buttonEntrar.setOnClickListener {
+            val textoEmail = binding.editLoginEmail.text.toString()
+            val textoSenha = Objects.requireNonNull(binding.textInputSenhaLogin.text).toString()
+            if (textoEmail.isNotEmpty()) {
+                if (textoSenha.isNotEmpty()) {
+                    usuario = Usuario()
+                    usuario.email = textoEmail
+                    usuario.senha = textoSenha
+                    validarLogin(usuario)
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Preencha a senha!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
-            }else {
-                Toast.makeText(LoginActivity.this,
-                        "Preencha o e-mail!",
-                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Preencha o email!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        });
-
-        //ativação do textview "login com google"
-        loginGoogle.setOnClickListener(view -> {
-            signiIn();
-
-        });
-
-        //ativação do TextView "Recuperar Senha"
-        textRecuperarSenha.setOnClickListener(view -> {
-            recuperarSenha();
-        });
-
-    }
-
-    //Método para recuperar senha
-    private void recuperarSenha(){
-
-        String textoEmail = campoEmail.getText().toString();
-        if ( textoEmail.isEmpty()){
-            Toast.makeText(LoginActivity.this,
-                    "Preencha o campo e-mail para Recuperar sua senha!",
-                    Toast.LENGTH_SHORT).show();
-        }else {
-            enviarEmail(textoEmail);
         }
 
+        //Ir para tela de cadastro
+        binding.textCadastrar.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, CadastroActivity::class.java))
+        }
+
+        //Login com conta Google
+        binding.textLoginGoogle.setOnClickListener {
+            binding.progressBarLogin.visibility = View.VISIBLE
+            val signInIntent = googleSignInClient.signInIntent
+            abreActivity.launch(signInIntent)
+        }
     }
 
-    //Método que envia email para recuperação de senha
-    private void enviarEmail(String textoEmail){
-
-        autenticacao.sendPasswordResetEmail(textoEmail).addOnSuccessListener(unused -> {
-            Toast.makeText(getBaseContext(),"Enviamos um Link de redefinição de senha para o seu e-mail.",
-                    Toast.LENGTH_LONG).show();
-
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getBaseContext(),"Erro ao enviar e-mail",
-                    Toast.LENGTH_LONG).show();
-        });
-    }
-
-    //Método para abrir tela de login com conta google
-    private void signiIn(){
-        Intent intent = googleSignInClient.getSignInIntent();
-       //startActivityForResult(intent, 1);
-        abreActivity.launch(intent);
-    }
-
-    //Método para abrir tela de login com conta google
-    ActivityResultLauncher<Intent> abreActivity = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK){
-                    Intent intent = result.getData();
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent( intent );//Método para ver conta que está logada no aparelho.
-                    try {
-                        GoogleSignInAccount conta = task.getResult(ApiException.class);
-                        loginComGoogle(conta.getIdToken());
-                    }catch (ApiException exception){
-                        Toast.makeText(LoginActivity.this,
-                                "Nenhum usuário Google logado no aparelho",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-    );
-
-    //Método para login com conta google
-    private void loginComGoogle(String token){
-        AuthCredential credencial = GoogleAuthProvider.getCredential(token, null);
-        autenticacao.signInWithCredential( credencial ).addOnCompleteListener(this, task -> {
-
-            if (task.isSuccessful()){
-                Toast.makeText(LoginActivity.this,
-                        "Login com Google efetuado com sucesso ",
-                        Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-
-            }else{
-                Toast.makeText(LoginActivity.this,
-                        "Erro ao efetuar login com Google",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        if (requestCode == 1 ){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent( intent );//Método para ver conta que está logada no aparelho.
+    private val abreActivity = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
             try {
-                GoogleSignInAccount conta = task.getResult(ApiException.class);
-                loginComGoogle(conta.getIdToken());
-            }catch (ApiException exception){
-                Toast.makeText(LoginActivity.this,
-                        "Nenhum usuário Google logado no aparelho",
-                        Toast.LENGTH_LONG).show();
-                Log.d("Erro", exception.toString());
+                val conta = task.getResult(ApiException::class.java)
+                loginComGoogle(conta.idToken)
+            } catch (e: ApiException) {
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Nenhum usuário Google logado no aparelho",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
-    public void verificarUsuarioLogado(){
-        autenticacao = Configuracaofirebase.getReferenciaAutenticacao();
-         //autenticacao.signOut();//Deslogar usuário
-        if ( autenticacao.getCurrentUser() != null ){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
-    }
+    //Método para validar o login do usuário
+    private fun validarLogin(usuario: Usuario) {
+        binding.progressBarLogin.visibility = View.VISIBLE
+        autenticacao.signInWithEmailAndPassword(usuario.email, usuario.senha)
+            .addOnCompleteListener { task ->
 
-    public void validarLogin( Usuario usuario){
+                if (task.isSuccessful) {
+                    binding.progressBarLogin.visibility = View.VISIBLE
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Login efetuado com sucesso!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
 
-        progressBar.setVisibility( View.VISIBLE);
-        autenticacao = Configuracaofirebase.getReferenciaAutenticacao();
-
-        autenticacao.signInWithEmailAndPassword(
-                usuario.getEmail(),
-                usuario.getSenha()
-        ).addOnCompleteListener(task -> {
-
-            if ( task.isSuccessful() ){
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-
-            }else {
-
-                String erroExcecao = "";
-                try {
-                    throw Objects.requireNonNull(task.getException());
-                }catch (FirebaseAuthInvalidCredentialsException e) {
-                    erroExcecao = "E-mail ou senha está incorreto";
-                }catch (FirebaseAuthInvalidUserException e){
-                    erroExcecao = "Usuário não está cadastrado.";
-                }catch (Exception e){
-                    erroExcecao = "Erro ao logar usuário: " + e.getMessage();
-                    e.printStackTrace();
+                } else {
+                    binding.progressBarLogin.visibility = View.INVISIBLE
+                    val erroExcecao = try {
+                        throw task.exception!!
+                    } catch (e: FirebaseAuthInvalidUserException) {
+                        "Usuário não cadastrado."
+                    } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        "E-mail e/ou senha não correspondem a um usuário cadastrado."
+                    } catch (e: Exception) {
+                        "Erro ao efetuar login: ${e.message}"
+                    }
+                    Toast.makeText(
+                        this@LoginActivity,
+                        erroExcecao,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
-                Toast.makeText(LoginActivity.this,
-                        "Erro ao fazer login",
-                        Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility( View.INVISIBLE);
             }
-        });
-
     }
 
-    public void abrirCadastro(View view){
-        Intent i = new Intent(LoginActivity.this, CadastroActivity.class);
-        startActivity(i);
+    //Método para login com conta Google
+    private fun loginComGoogle(idToken: String?) {
+        val credencial: AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
+        autenticacao.signInWithCredential(credencial).addOnSuccessListener(this) {
+
+            val user = autenticacao.currentUser
+            binding.progressBarLogin.visibility = View.INVISIBLE
+            Toast.makeText(
+                this@LoginActivity, "Login efetuado com sucesso!", Toast.LENGTH_SHORT
+            ).show()
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
+        }.addOnFailureListener(this) { e ->
+            binding.progressBarLogin.visibility = View.INVISIBLE
+            Toast.makeText(
+                this@LoginActivity, "Erro ao efetuar login: ${e.message}", Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
-    public void inicializarComponentes(){
-
-        campoEmail = findViewById(R.id.editLoginEmail);
-        campoSenha = findViewById(R.id.textInputSenhaLogin);
-        botaoLogin = findViewById(R.id.buttonEntrar);
-        progressBar = findViewById(R.id.progressBarLogin);
-        loginGoogle = findViewById(R.id.textLoginGoogle);
-        textRecuperarSenha = findViewById(R.id.textRecuperarSenha);
-
-        campoEmail.requestFocus();
+    //Método para verificar se o usuário está logado
+    private fun verificarUsuarioLogado() {
+        if (autenticacao.currentUser != null) {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
+        }
     }
 }
+
