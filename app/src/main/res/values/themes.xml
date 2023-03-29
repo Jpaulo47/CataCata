@@ -26,9 +26,10 @@
     </style>
 
 
-    <style name="theme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:windowBackground">@drawable/splashscreem</item>
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/catacata_vetor</item>
+        <item name="windowSplashScreenBackground">@color/colorPrimary</item>
+        <item name="postSplashScreenTheme">@style/Theme.CataCata</item>
     </style>
 
     <style name="BottonNavigationStyle" parent="Theme.MaterialComponents">

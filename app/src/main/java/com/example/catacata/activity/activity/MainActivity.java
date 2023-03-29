@@ -34,7 +34,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacao;
-    private CircleImageView circleImageImagePerfil;
     ActivityMainBinding binding;
 
     @SuppressLint({"ResourceAsColor", "NonConstantResourceId"})
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         //configuração de objetos
         autenticacao = Configuracaofirebase.getReferenciaAutenticacao();
-        circleImageImagePerfil = findViewById(R.id.circleImageToolbar);
+        CircleImageView circleImageImagePerfil = findViewById(R.id.circleImageToolbar);
 
         //Configuração da toolbar
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser usuarioPerfil = UsuarioFirebase.getUsuarioAtual();
         Uri url = usuarioPerfil.getPhotoUrl();
         if ( url != null ){
-            Glide.with(MainActivity.this).load( url ).into( circleImageImagePerfil );
+            Glide.with(MainActivity.this).load( url ).into(circleImageImagePerfil);
 
         }else {
             circleImageImagePerfil.setImageResource(R.drawable.padrao);
