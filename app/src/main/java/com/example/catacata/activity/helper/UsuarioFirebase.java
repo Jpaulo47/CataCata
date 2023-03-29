@@ -8,14 +8,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.Objects;
+
 public class UsuarioFirebase {
 
     public static String getIdentificadorUsuario(){
         FirebaseAuth usuario = Configuracaofirebase.getReferenciaAutenticacao();
-        String email = usuario.getCurrentUser().getEmail();
-        String identificadorUsuario = Base64Custom.codificarBase64( email );
+        String email = Objects.requireNonNull(usuario.getCurrentUser()).getEmail();
 
-        return identificadorUsuario;
+        return Base64Custom.codificarBase64(Objects.requireNonNull(email));
     }
 
     public static FirebaseUser getUsuarioAtual(){
