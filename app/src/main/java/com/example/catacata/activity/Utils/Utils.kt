@@ -254,50 +254,46 @@ object Utils {
     Esse exemplo aplicaria a máscara de CPF no EditText, onde "#" seria substituído pelos valores digitados pelo usuário.
      */
     fun addMaskToEditText(editText: EditText, mask: String) {
-        val textWatcher = object : TextWatcher {
-            var isUpdating = false
-            var oldText = ""
-
+        var textWatcher: TextWatcher? = null
+        textWatcher = object : TextWatcher {
+            private var isUpdating = false
+            private var oldText = ""
             override fun beforeTextChanged(
-                s: CharSequence?, start: Int, count: Int, after: Int
+                s: CharSequence, start: Int, count: Int, after: Int
             ) {
             }
 
             override fun onTextChanged(
-                s: CharSequence?, start: Int, before: Int, count: Int
+                s: CharSequence, start: Int, before: Int, count: Int
             ) {
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                val newText = s.toString()
-                if (isUpdating || newText == oldText) {
+            override fun afterTextChanged(s: Editable) {
+                if (isUpdating) {
                     return
                 }
-                isUpdating = true
-
+                val newText = s.toString()
+                var cleanText = newText.replace("[^\\d.]".toRegex(), "")
                 var formattedText = ""
                 var i = 0
-                for (m in mask) {
-                    if (m != '#' && newText.length > oldText.length) {
-                        formattedText += m
-                        continue
-                    }
-                    try {
-                        formattedText += newText[i]
-                    } catch (e: Exception) {
-                        break
+                var j = 0
+                while (i < mask.length && j < cleanText.length) {
+                    if (mask[i] == '#') {
+                        formattedText += cleanText[j]
+                        j++
+                    } else {
+                        formattedText += mask[i]
                     }
                     i++
                 }
-
+                isUpdating = true
                 editText.setText(formattedText)
                 editText.setSelection(formattedText.length)
-                oldText = formattedText
                 isUpdating = false
             }
         }
-
         editText.addTextChangedListener(textWatcher)
     }
+
 }
     

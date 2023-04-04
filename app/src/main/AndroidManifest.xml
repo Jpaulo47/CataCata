@@ -41,6 +41,7 @@
             android:parentActivityName=".activity.activity.MainActivity" />
         <activity
             android:name=".activity.activity.CadastroActivity"
+            android:theme="@style/Theme.MaterialAlternativo"
             android:exported="false" />
         <activity
             android:name=".activity.activity.MainActivity"

@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.CataCata" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.CataCata" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorAccent</item>
@@ -20,7 +20,7 @@
         <item name="android:itemBackground">#AECCCB</item>
     </style>
 
-    <style name="Toolbar" parent="Theme.AppCompat.NoActionBar" >
+    <style name="Toolbar" parent="Theme.Material3.Light.NoActionBar" >
 
         <item name="android:textColorSecondary">@color/verdeIcons</item>
     </style>
@@ -32,13 +32,18 @@
         <item name="postSplashScreenTheme">@style/Theme.CataCata</item>
     </style>
 
-    <style name="BottonNavigationStyle" parent="Theme.MaterialComponents">
+    <style name="Theme.MaterialAlternativo" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/verdeIcons</item>
+        <item name="colorPrimaryVariant">@color/colorAccent</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="BottonNavigationStyle" parent="Theme.Material3.Light">
 
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
         <item name="colorPrimary">@color/verdeIcons</item>
         <item name="colorOnPrimary">@color/white</item>
 
     </style>
-
 
 </resources>
