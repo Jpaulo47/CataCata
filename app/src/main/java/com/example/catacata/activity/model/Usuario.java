@@ -14,6 +14,12 @@ public class Usuario implements Serializable {
     private String id;
     private String nome;
     private String email;
+    private String cep;
+    private String bairro;
+    private String municipio;
+    private String estado;
+    private String logradouro;
+
     private String senha;
     private String caminhoFoto;
 
@@ -50,6 +56,11 @@ public class Usuario implements Serializable {
         usuarioMap.put("nome", getNome() );
         usuarioMap.put("id", getId() );
         usuarioMap.put("caminhoFoto", getCaminhoFoto() );
+        usuarioMap.put("cep", getCep() );
+        usuarioMap.put("municipio", getMunicipio() );
+        usuarioMap.put("bairro", getBairro() );
+        usuarioMap.put("estado", getEstado() );
+        usuarioMap.put("logradouro", getLogradouro() );
 
         return usuarioMap;
     }
@@ -94,5 +105,45 @@ public class Usuario implements Serializable {
 
     public void setCaminhoFoto(String caminhoFoto) {
         this.caminhoFoto = caminhoFoto;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 }

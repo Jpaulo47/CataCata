@@ -79,5 +79,13 @@
     <string name="creme_image">Imagem creme de proteção</string>
     <string name="descri_o_do_equipamento_de_prote_o_individual">Descrição do equipamento de proteção individual.</string>
     <string name="dados_pessoais">Dados Pessoais</string>
+    <string name="telefone">Telefone</string>
+    <string name="data_de_nascimento">Data de nascimento</string>
+    <string name="cep">Cep</string>
+    <string name="buscar">buscar</string>
+    <string name="estado">Estado</string>
+    <string name="munic_pio">Município</string>
+    <string name="bairro">Bairro</string>
+    <string name="logradouro">Logradouro</string>
 
 </resources>

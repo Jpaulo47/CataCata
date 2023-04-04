@@ -32,6 +32,12 @@
         <item name="postSplashScreenTheme">@style/Theme.CataCata</item>
     </style>
 
+    <style name="Theme.MaterialAlternativo" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/verdeIcons</item>
+        <item name="colorPrimaryVariant">@color/colorAccent</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
     <style name="BottonNavigationStyle" parent="Theme.Material3.Light">
 
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
@@ -39,6 +45,5 @@
         <item name="colorOnPrimary">@color/white</item>
 
     </style>
-
 
 </resources>
