@@ -87,5 +87,8 @@
     <string name="munic_pio">Município</string>
     <string name="bairro">Bairro</string>
     <string name="logradouro">Logradouro</string>
+    <string name="alterar_foto">Alterar foto</string>
+    <string name="alterar_dados">Alterar dados</string>
+    <string name="salvar">salvar</string>
 
 </resources>

@@ -1,15 +1,25 @@
 package com.example.catacata.activity.activity
 
+//noinspection SuspiciousImport
+import CepApi
 import Notificador.Companion.showToast
 import Utils
+import Validator
+//noinspection SuspiciousImport
 import android.R
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.catacata.activity.helper.Base64Custom
 import com.example.catacata.activity.helper.Configuracaofirebase
 import com.example.catacata.activity.helper.UsuarioFirebase
@@ -18,13 +28,17 @@ import com.example.catacata.databinding.ActivityCadastroBinding
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 
 class CadastroActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCadastroBinding
 
+
     private var usuario: Usuario? = null
+    private val PICK_IMAGE_REQUEST = 1
+    private var imageUri: Uri? = null // Variável de classe para armazenar a URI da imagem selecionada
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,22 +52,23 @@ class CadastroActivity : AppCompatActivity() {
             buscarCep(binding.editCadastroCep.text.toString())
         }
 
+        binding.imagePerfil.setOnClickListener { openGallery() }
+
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     fun cadastrarUsuario() {
-        //Cadastrar usuario
+
         binding.progressBarCadastro.visibility = ProgressBar.GONE
-        binding.buttonCadastrar.setOnClickListener {
-
-
-            if (!camposPreenchidos()) return@setOnClickListener
-            usuario = Usuario()
-            cadastrar(usuario!!)
-
-        }
+        binding.buttonCadastrar.setOnClickListener { validarDados() }
     }
 
-    private fun camposPreenchidos(): Boolean {
+    private fun validarDados() {
         val textoNome = binding.editNomeUsuario.text.toString()
         val textoEmail = binding.editCadastroEmail.text.toString()
         val textoSenha = binding.textInputSenhaCadastro.text.toString()
@@ -62,63 +77,99 @@ class CadastroActivity : AppCompatActivity() {
         val textoEstado = binding.editCadastroUf.text.toString()
         val textoLogradouro = binding.editCadastroLogradouro.text.toString()
         val textoBairro = binding.editCadastroBairro.text.toString()
-        val textoConfirmaSenha = binding.textInputConfirmaSenha.text.toString()
+        val textoTelefone = binding.editCadastroTelefone.text.toString()
+        val dataNascimento = binding.editCadastroNascimento.text.toString()
+        val textoSexo = binding.spinnerSexo.selectedItem.toString()
+        val textoOcupacao = binding.spinnerOcupacao.selectedItem.toString()
+        val termosUso = binding.checkBoxTermosServico.isChecked
 
-        if (textoNome.isEmpty()) {
-            binding.editNomeUsuario.setError("Preencha o nome")
-            binding.editNomeUsuario.requestFocus()
+        val validator = Validator()
 
-            return false
+        validator.addDateValidator(
+            binding.editCadastroNascimento,
+            "Data de nascimento inválida!",
+            true
+        )
+        validator.addEmailValidator(
+            binding.editCadastroEmail,
+            "Digite um e-mail no formato: nome@email.com",
+            true
+        )
+        validator.addNameValidator(
+            binding.editNomeUsuario,
+            "Nome Inválido, informe seu nome e sobrenome!",
+            true
+        )
+        validator.addPhoneNumberValidator(binding.editCadastroTelefone, "Campo obrigatório", true)
+        validator.addRequiredFieldValidator(binding.editCadastroCep, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroBairro, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroMunicipio, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroUf, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroLogradouro, "Campo obrigatório")
+        validator.addSpinnerValidator(binding.spinnerOcupacao, this, "Informe sua ocupação!")
+        validator.addSpinnerValidator(binding.spinnerSexo, this, "Informe seu sexo!")
+        validator.addPasswordValidator(binding.textInputSenhaCadastro, "Senha inválida!", true)
+        validator.addConfirmPasswordValidator(
+            binding.textInputConfirmaSenha,
+            binding.textInputSenhaCadastro,
+            "As senhas tem que ser iguais!"
+        )
+
+        if (validator.validateFields()) {
+            usuario = Usuario()
+            usuario?.nome = textoNome
+            usuario?.email = textoEmail
+            usuario?.senha = textoSenha
+            usuario?.cep = textoCep
+            usuario?.municipio = textoMunicipio
+            usuario?.bairro = textoBairro
+            usuario?.logradouro = textoLogradouro
+            usuario?.estado = textoEstado
+            usuario?.telefone = textoTelefone
+            usuario?.dataNascimento = Utils.stringToDate(dataNascimento)
+            usuario?.sexo = textoSexo
+            usuario?.ocupacao = textoOcupacao
+            usuario?.isTermosdeUso = termosUso
+
+            if (!binding.checkBoxTermosServico.isChecked) {
+                showToast("É necessario aceitar os termos de uso!")
+                return
+            }
+
+            imageUri?.let { saveImageToFirebase(it, textoEmail) }
+
+            binding.progressBarCadastro.visibility = View.VISIBLE
+            binding.buttonCadastrar.setText("")
+            cadastrar(usuario!!)
         }
-
-        if (textoEmail.isEmpty()) {
-            binding.editCadastroEmail.setError("Preencha o E-mail")
-            return false
-        }
-
-        if (textoSenha.isEmpty()) {
-            binding.textInputSenhaCadastro.setError("Preencha a senha")
-            return false
-        }
-
-        if (textoSenha != textoConfirmaSenha) {
-            binding.textInputConfirmaSenha.setError("Suas senhas não são iguais")
-            return false
-        }
-
-        if (binding.checkBoxTermosServico.isChecked) {
-            showToast("Aceite nossos termos de serviço e condições de uso para continuar")
-            return false
-        }
-
-        if (textoCep.isEmpty()) {
-            binding.editCadastroCep.setError("Preencha o CEP")
-            return false
-        }
-
-        if (textoMunicipio.isEmpty()) {
-            binding.editCadastroMunicipio.setError("Preencha o município")
-            return false
-        }
-
-        if (textoEstado.isEmpty()) {
-            binding.editCadastroUf.setError("Preencha o estado")
-            return false
-        }
-
-        if (textoLogradouro.isEmpty()) {
-            binding.editCadastroLogradouro.setError("Preencha o logradouro")
-            return false
-        }
-
-        if (textoBairro.isEmpty()) {
-            binding.editCadastroBairro.setError("Preencha o bairro")
-            return false
-        }
-
-        return true
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            imageUri = data.data
+
+            Glide.with(this)
+                .load(imageUri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .into(binding.imagePerfil)
+        }
+    }
+
+    private fun saveImageToFirebase(imageUri: Uri, email: String) {
+
+        val storageRef = FirebaseStorage.getInstance().getReference("imagens/perfil/$email.jpeg/perfil.jpeg")
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Imagem salva com sucesso!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erro ao salvar imagem", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     fun cadastrar(usuario: Usuario) {
         binding.progressBarCadastro.visibility = View.VISIBLE

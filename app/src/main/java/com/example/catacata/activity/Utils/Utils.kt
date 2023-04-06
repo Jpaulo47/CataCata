@@ -22,6 +22,8 @@ import java.util.*
  */
 object Utils {
 
+    private const val DATE_FORMAT = "dd/MM/yyyy"
+
     /**
      * Verifica se há conexão com a internet.
      * @return true se há conexão com a internet, false caso contrário.
@@ -293,6 +295,15 @@ object Utils {
             }
         }
         editText.addTextChangedListener(textWatcher)
+    }
+
+    fun stringToDate(dateString: String): Date? {
+        val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+        return try {
+            dateFormat.parse(dateString)
+        } catch (e: Exception) {
+            null
+        }
     }
 
 }

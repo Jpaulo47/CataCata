@@ -26,7 +26,7 @@ class InfoSegurancaActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarAlternativa)
         toolbar.title = "Info de Segurança"
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)?.setDisplayHomeAsUpEnabled(true)
+        Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_voltar)
         toolbar.setTitleTextColor(resources.getColor(R.color.verdeIcons))
 
