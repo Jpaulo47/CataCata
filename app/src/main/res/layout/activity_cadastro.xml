@@ -2,22 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/checkBoxCadastro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_degrade"
     android:orientation="vertical"
     tools:context=".activity.activity.CadastroActivity">
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBarCadastro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,18 +24,14 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
             <LinearLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/myCardView"
@@ -230,7 +215,8 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="24dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="DisableBaselineAlignment">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/inputCadastroUf"
@@ -252,7 +238,7 @@
                             android:layout_height="wrap_content"
                             android:autofillHints=""
                             android:ems="10"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:maxLength="8"
                             android:minHeight="48dp"
                             android:padding="8dp"
@@ -280,7 +266,7 @@
                             android:layout_height="wrap_content"
                             android:autofillHints=""
                             android:ems="10"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:minHeight="48dp"
                             android:padding="8dp"
                             android:textColorHint="#757575" />
@@ -451,18 +437,42 @@
                         android:textColorHint="#757575" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonCadastrar"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@drawable/button_background"
-                    android:backgroundTint="@color/buttons"
-                    android:fontFamily="sans-serif-black"
-                    android:text="@string/Buttoncadastrar"
-                    android:textColor="#1B3707" />
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp">
+
+                    <ProgressBar
+                        android:id="@+id/progressBarCadastro"
+                        style="@style/GreenProgressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="5dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonCadastrar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_background"
+                        android:backgroundTint="@color/buttons"
+                        android:fontFamily="sans-serif-black"
+                        android:text="@string/Buttoncadastrar"
+                        android:textColor="#1B3707"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/checkBoxTermosServico"

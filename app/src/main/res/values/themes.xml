@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >@color/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Customize your theme here. -->
 
         <!-- Para alterar o menu pop-up e a cor do texto do aplicativo  -->
@@ -21,10 +22,8 @@
     </style>
 
     <style name="Toolbar" parent="Theme.Material3.Light.NoActionBar" >
-
         <item name="android:textColorSecondary">@color/verdeIcons</item>
     </style>
-
 
     <style name="Theme.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/catacata_vetor</item>
@@ -36,6 +35,7 @@
         <item name="colorPrimary">@color/verdeIcons</item>
         <item name="colorPrimaryVariant">@color/colorAccent</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="BottonNavigationStyle" parent="Theme.Material3.Light">
@@ -44,6 +44,10 @@
         <item name="colorPrimary">@color/verdeIcons</item>
         <item name="colorOnPrimary">@color/white</item>
 
+    </style>
+
+    <style name="GreenProgressBar">
+        <item name="android:indeterminateTint">@color/verdeIcons</item>
     </style>
 
 </resources>

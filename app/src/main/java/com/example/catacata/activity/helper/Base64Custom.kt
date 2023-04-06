@@ -1,15 +1,15 @@
-package com.example.catacata.activity.helper;
+package com.example.catacata.activity.helper
 
+import android.util.Base64
 
-import android.util.Base64;
-
-public class Base64Custom {
-
-    public static String codificarBase64(String texto){
-        return Base64.encodeToString(texto.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+object Base64Custom {
+    @JvmStatic
+    fun codificarBase64(texto: String): String {
+        return Base64.encodeToString(texto.toByteArray(), Base64.DEFAULT)
+            .replace("([\\n\\r])".toRegex(), "")
     }
 
-    public static String decodificarBase64(String textoCodificado){
-        return new String(Base64.decode(textoCodificado, Base64.DEFAULT));
+    fun decodificarBase64(textoCodificado: String?): String {
+        return String(Base64.decode(textoCodificado, Base64.DEFAULT))
     }
 }

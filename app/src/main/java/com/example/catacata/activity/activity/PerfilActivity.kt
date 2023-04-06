@@ -1,159 +1,200 @@
-package com.example.catacata.activity.activity;
+package com.example.catacata.activity.activity
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import FirebaseDatabaseHelper
+import Notificador
+import UsuarioRepository
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
+import android.view.View
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.catacata.R
+import com.example.catacata.activity.helper.Configuracaofirebase
+import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.activity.model.Usuario
+import com.example.catacata.databinding.ActivityPerfilBinding
+import com.google.firebase.storage.StorageReference
+import java.io.ByteArrayOutputStream
+import java.util.*
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+class PerfilActivity : AppCompatActivity() {
 
-import com.bumptech.glide.Glide;
-import com.example.catacata.R;
-import com.example.catacata.activity.fragments.HomeFragment;
-import com.example.catacata.activity.helper.Configuracaofirebase;
-import com.example.catacata.activity.helper.UsuarioFirebase;
-import com.example.catacata.activity.model.Usuario;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import org.jetbrains.annotations.Nullable;
-
-import java.io.ByteArrayOutputStream;
-import java.util.Objects;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class PerfilActivity extends AppCompatActivity {
-
-    private static final int SELECAO_GALERIA = 200;
-    private CircleImageView circleImageImagePerfil;
-    private StorageReference storageReference;
-    private String identificadorUsuario;
-    private Usuario usuarioLogado;
+    private lateinit var binding: ActivityPerfilBinding
+    private var storageReference: StorageReference? = null
+    private var identificadorUsuario: String? = null
+    private var usuarioLogado: Usuario? = null
 
     @SuppressLint("QueryPermissionsNeeded")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_perfil);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPerfilBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        //Configuração da toolbar
-        Toolbar toolbar = findViewById(R.id.toolbarPerfil);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_voltar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.verdeIcons));
-
-        //Inicializar componentes
-        ImageButton imageButtonAlterarFoto = findViewById(R.id.imageAlterarFoto);
-        circleImageImagePerfil = findViewById(R.id.circleImageToolbar);
-        TextView textNomeUsuario = findViewById(R.id.textNomeUsuarioPerfil);
-        TextView textEmailUsuario = findViewById(R.id.textEmailUsuarioLogado);
-        storageReference = Configuracaofirebase.getFirebaseStorage();
-        usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
-        identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario();
-
-        //Recuperando dados do usuario
-        FirebaseUser usuarioPerfil = UsuarioFirebase.getUsuarioAtual();
-        Uri url = usuarioPerfil.getPhotoUrl();
-        if ( url != null ){
-            Glide.with(PerfilActivity.this).load( url ).into( circleImageImagePerfil );
-
-        }else {
-            circleImageImagePerfil.setImageResource(R.drawable.padrao);
-        }
-
-        textNomeUsuario.setText( usuarioPerfil.getDisplayName() );
-        textEmailUsuario.setText( usuarioPerfil.getEmail() );
-
-        //Método para alterar foto do usuario
-        imageButtonAlterarFoto.setOnClickListener(view -> {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            if (i.resolveActivity(getPackageManager()) != null )
-                startActivityForResult(i, SELECAO_GALERIA);
-        });
+        inicializarObjetos()
+        configurartoolbar()
+        atualizarImagemPerfil()
+        setarInfoView()
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        if ( resultCode == RESULT_OK ){
-            Bitmap imagem = null;
+        if (resultCode != RESULT_OK) {
+            return
+        }
 
-            try {
-
-                //Seleção da imagem da galeria
-                if (requestCode == SELECAO_GALERIA) {
-                    assert data != null;
-                    Uri localImagemSelecionada = data.getData();
-                    imagem = MediaStore.Images.Media.getBitmap(getContentResolver(), localImagemSelecionada);
+        try {
+            val imagem = if (requestCode == SELECAO_GALERIA) {
+                data?.data?.let {
+                    MediaStore.Images.Media.getBitmap(contentResolver, it)
                 }
+            } else {
+                null
+            }
 
-                //para Implementar botao de atualizar nome: Aula 231
-                //Carregar imagem ao ser escolhida
-                if ( imagem != null ){
-                    circleImageImagePerfil.setImageBitmap( imagem );
+            imagem?.let {
+                binding.circleImageToolbar.setImageBitmap(imagem)
 
-                    //recupera dados da imagem para o firebase
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-                    byte[] dadosImagem = baos.toByteArray();
+                val dadosImagem = compressBitmap(imagem)
 
-                    //salvar imagem no firebase
-                    final StorageReference imagemRef = storageReference
-                            .child("imagens")
-                            .child("perfil")
-                            .child(identificadorUsuario + ".jpeg")
-                            .child("perfil.jpeg");
-
-                    UploadTask uploadTask = imagemRef.putBytes( dadosImagem );
-                    uploadTask.addOnFailureListener(e -> {
-                        Toast.makeText(PerfilActivity.this, "Erro ao fazer upload da imagem",
-                                Toast.LENGTH_SHORT).show();
-
-                    }).addOnSuccessListener(taskSnapshot -> {
-                        Toast.makeText(PerfilActivity.this, "Sucesso ao fazer upload da imagem",
-                                Toast.LENGTH_SHORT).show();
-
-                       imagemRef.getDownloadUrl().addOnSuccessListener(this::atualizarFotoUsuario);
-
-                    });
-
+                uploadImagem(dadosImagem) { url ->
+                    atualizarFotoUsuario(url)
                 }
-            }catch (Exception e){
-                e.printStackTrace();
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun compressBitmap(bitmap: Bitmap): ByteArray {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos)
+        return baos.toByteArray()
+    }
+
+    private fun uploadImagem(dadosImagem: ByteArray, onUploadComplete: (Uri) -> Unit) {
+        val imagemRef = storageReference
+            ?.child("imagens")
+            ?.child("perfil")
+            ?.child("${usuarioLogado?.email}.jpeg")
+            ?.child("perfil.jpeg")
+
+        val uploadTask = imagemRef?.putBytes(dadosImagem)
+
+        uploadTask?.addOnFailureListener { e: Exception? ->
+            Notificador.showToast("Erro ao fazer upload da imagem")
+
+        }?.addOnSuccessListener {
+
+            Notificador.showToast("Sucesso ao fazer upload da imagem")
+            imagemRef.downloadUrl.addOnSuccessListener { url: Uri ->
+                onUploadComplete(url)
             }
         }
     }
 
-    //Método responsavel por atualizar foto do usuario
-    public void atualizarFotoUsuario(Uri url){
-        boolean retorno = UsuarioFirebase.atualizarFotoUsuario( url );
-        if ( retorno ){
-            usuarioLogado.setCaminhoFoto( url.toString() );
-            usuarioLogado.atualizar();
-
-            Toast.makeText(PerfilActivity.this,
-                    "Sucesso ao alterar sua foto",
-                    Toast.LENGTH_SHORT).show();
+    fun atualizarFotoUsuario(url: Uri) {
+        val retorno = UsuarioFirebase.atualizarFotoUsuario(url)
+        if (retorno) {
+            usuarioLogado?.caminhoFoto = url.toString()
+            usuarioLogado?.atualizar()
+            Notificador.showToast("Sucesso ao alterar sua foto")
         }
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {//Método para finalizar activity atual
-        finish();
-        return false;
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return false
+    }
+
+    companion object {
+        private const val SELECAO_GALERIA = 200
+    }
+
+    fun atualizarImagemPerfil(){
+        UsuarioFirebase.getUriImagemPerfil({ uri: Uri? ->
+            Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH).into(binding.circleImageToolbar)
+        }) { e: Exception? -> binding.circleImageToolbar.setImageResource(R.drawable.padrao) }
+    }
+
+    fun configurartoolbar(){
+        val toolbar = binding.toolbarPerfil
+        toolbar.title = ""
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_voltar)
+        toolbar.setTitleTextColor(resources.getColor(R.color.verdeIcons))
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun setarInfoView(){
+
+        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
+
+        val usuarioRepository = UsuarioRepository()
+        val idUsuario = UsuarioFirebase.getIdentificadorUsuario()
+        usuarioRepository.getUsuario(idUsuario) { usuario ->
+            if (usuario != null) {
+                binding.editNomeUsuario.setText(usuario.nome)
+                binding.editCadastroEmail.setText(usuario.email)
+                binding.editCadastroTelefone.setText(usuario.telefone)
+                binding.editCadastroCep.setText(usuario.cep)
+                binding.editCadastroMunicipio.setText(usuario.municipio)
+                binding.editCadastroBairro.setText(usuario.bairro)
+                binding.editCadastroLogradouro.setText(usuario.logradouro)
+                binding.editCadastroUf.setText(usuario.estado)
+                binding.editCadastroNascimento.setText(usuario.dataNascimento?.let {
+                    Utils.formatDate(
+                        it, "dd/MM/yyyy")
+                })
+
+                binding.spinnerSexo.adapter = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    listOf(usuario.sexo)
+                )
+                binding.spinnerOcupacao.adapter = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    listOf(usuario.ocupacao)
+                )
+            } else {
+                binding.textNomeUsuarioPerfil.text = "usuario não encontrado"
+            }
+        }
+
+        usuarioLogado = Usuario()
+        binding.textNomeUsuarioPerfil.text = usuarioPerfil.displayName
+        binding.textEmailUsuarioLogado.text = usuarioPerfil.email
+
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    val aoClicarImageAlterarFoto = View.OnClickListener {
+        val i = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        if (i.resolveActivity(packageManager) != null) startActivityForResult(
+            i,
+            SELECAO_GALERIA
+        )
+    }
+
+
+    private fun inicializarObjetos() {
+        storageReference = Configuracaofirebase.getFirebaseStorage()
+        usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado()
+        identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario()
+
+        binding.imageAlterarFoto.setOnClickListener(aoClicarImageAlterarFoto)
+
     }
 }
