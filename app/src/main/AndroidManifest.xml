@@ -25,19 +25,21 @@
         <activity
             android:name=".activity.activity.DetalhesInfoActivity"
             android:exported="false"
+            android:theme="@style/Theme.MaterialAlternativo"
             android:parentActivityName=".activity.activity.InfoSegurancaActivity" />
         <activity
             android:name=".activity.activity.InfoSegurancaActivity"
             android:exported="false"
+            android:theme="@style/Theme.MaterialAlternativo"
             android:parentActivityName=".activity.activity.MainActivity" />
         <activity
             android:name=".activity.activity.PerfilActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.MaterialAlternativo"
             android:exported="false" />
         <activity
             android:name=".activity.activity.MeusMateriaisActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.MaterialAlternativo"
             android:parentActivityName=".activity.activity.MainActivity" />
         <activity
             android:name=".activity.activity.CadastroActivity"
@@ -45,9 +47,11 @@
             android:exported="false" />
         <activity
             android:name=".activity.activity.MainActivity"
+            android:theme="@style/Theme.MaterialAlternativo"
             android:exported="false" />
         <activity
             android:name=".activity.activity.LoginActivity"
+            android:theme="@style/Theme.MaterialAlternativo"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

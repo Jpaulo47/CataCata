@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +20,13 @@ public class Usuario implements Serializable {
     private String municipio;
     private String estado;
     private String logradouro;
-
     private String senha;
     private String caminhoFoto;
+    private String telefone;
+    private String sexo;
+    private String ocupacao;
+    private boolean termosdeUso;
+    private Date dataNascimento;
 
     public Usuario() {
     }
@@ -61,6 +66,10 @@ public class Usuario implements Serializable {
         usuarioMap.put("bairro", getBairro() );
         usuarioMap.put("estado", getEstado() );
         usuarioMap.put("logradouro", getLogradouro() );
+        usuarioMap.put("telefone", getTelefone() );
+        usuarioMap.put("dataNascimento", getDataNascimento() );
+        usuarioMap.put("sexo", getSexo() );
+        usuarioMap.put("ocupacao", getOcupacao() );
 
         return usuarioMap;
     }
@@ -145,5 +154,45 @@ public class Usuario implements Serializable {
 
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getOcupacao() {
+        return ocupacao;
+    }
+
+    public void setOcupacao(String ocupacao) {
+        this.ocupacao = ocupacao;
+    }
+
+    public boolean isTermosdeUso() {
+        return termosdeUso;
+    }
+
+    public void setTermosdeUso(boolean termosdeUso) {
+        this.termosdeUso = termosdeUso;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 }

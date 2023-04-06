@@ -18,6 +18,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.catacata.R;
 import com.example.catacata.activity.fragments.AgendamentoFragment;
 import com.example.catacata.activity.fragments.AjudaFragment;
@@ -40,13 +42,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_CataCata);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         //configuração de objetos
         autenticacao = Configuracaofirebase.getReferenciaAutenticacao();
-        CircleImageView circleImageImagePerfil = findViewById(R.id.circleImageToolbar);
 
         //Configuração da toolbar
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
@@ -83,15 +83,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, PerfilActivity.class);
             startActivity( intent );
         });
-
-        FirebaseUser usuarioPerfil = UsuarioFirebase.getUsuarioAtual();
-        Uri url = usuarioPerfil.getPhotoUrl();
-        if ( url != null ){
-            Glide.with(MainActivity.this).load( url ).into(circleImageImagePerfil);
-
-        }else {
-            circleImageImagePerfil.setImageResource(R.drawable.padrao);
-        }
 
     }
 
@@ -146,5 +137,21 @@ public class MainActivity extends AppCompatActivity {
     public void abrirTelaInfoSeguranca(View view){
         Intent intent = new Intent(MainActivity.this, InfoSegurancaActivity.class);
         startActivity( intent );
+    }
+
+    @Override
+    protected void onResume() {
+        atualizarImagePerfil();
+        super.onResume();
+    }
+
+    private void atualizarImagePerfil(){
+        CircleImageView circleImageImagePerfil = findViewById(R.id.circleImageToolbar);
+        UsuarioFirebase.getUriImagemPerfil(uri -> Glide.with(MainActivity.this)
+                        .load( uri )
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.HIGH)
+                        .into( circleImageImagePerfil ),
+                e -> circleImageImagePerfil.setImageResource(R.drawable.padrao));
     }
 }
