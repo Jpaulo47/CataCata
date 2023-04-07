@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarPrincipal"
@@ -17,9 +16,9 @@
             android:id="@+id/circleImageToolbar"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/padrao"
             android:layout_gravity="left"
             android:layout_marginEnd="20dp"
+            android:src="@drawable/padrao"
             tools:ignore="RtlHardcoded" />
 
         <TextView

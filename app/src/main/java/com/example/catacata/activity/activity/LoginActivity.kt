@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
     //Método para validar o login do usuário
     private fun validarLogin(usuario: Usuario) {
         binding.progressBarLogin.visibility = View.VISIBLE
-        autenticacao.signInWithEmailAndPassword(usuario.email, usuario.senha)
+        autenticacao.signInWithEmailAndPassword(usuario.email.toString(), usuario.senha.toString())
             .addOnCompleteListener { task ->
 
                 if (task.isSuccessful) {

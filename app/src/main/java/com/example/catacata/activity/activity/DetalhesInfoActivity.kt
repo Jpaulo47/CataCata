@@ -29,7 +29,7 @@ class DetalhesInfoActivity : AppCompatActivity() {
         //Recuperando dados do usuario no firebaseUser
         val circleImageToolbarAlternativa = findViewById<CircleImageView>(R.id.circleImageToolbar)
         val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
-        val url = usuarioPerfil.photoUrl
+        val url = usuarioPerfil!!.photoUrl
         if (url != null) {
             Glide.with(this).load(url).into(circleImageToolbarAlternativa)
         } else {
