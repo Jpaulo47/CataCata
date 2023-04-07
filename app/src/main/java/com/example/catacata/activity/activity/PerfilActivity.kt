@@ -1,17 +1,24 @@
 package com.example.catacata.activity.activity
 
-import FirebaseDatabaseHelper
 import Notificador
 import UsuarioRepository
+import Validator
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginTop
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -20,7 +27,12 @@ import com.example.catacata.activity.helper.Configuracaofirebase
 import com.example.catacata.activity.helper.UsuarioFirebase
 import com.example.catacata.activity.model.Usuario
 import com.example.catacata.databinding.ActivityPerfilBinding
+import com.example.utils.UtilsView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -41,13 +53,16 @@ class PerfilActivity : AppCompatActivity() {
         configurartoolbar()
         atualizarImagemPerfil()
         setarInfoView()
+        UtilsView.setEditTextsEnabled(false, binding.linearPerfil, binding.linearCep, binding.linearEstado)
+        preencherSpinner()
+        adicionarMascaras()
 
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
         if (resultCode != RESULT_OK) {
             return
         }
@@ -67,7 +82,7 @@ class PerfilActivity : AppCompatActivity() {
                 val dadosImagem = compressBitmap(imagem)
 
                 uploadImagem(dadosImagem) { url ->
-                    atualizarFotoUsuario(url)
+                    atualizarFotoUsuario(url, usuarioPerfil!!.email.toString())
                 }
             }
         } catch (e: Exception) {
@@ -82,10 +97,11 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     private fun uploadImagem(dadosImagem: ByteArray, onUploadComplete: (Uri) -> Unit) {
+        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
         val imagemRef = storageReference
             ?.child("imagens")
             ?.child("perfil")
-            ?.child("${usuarioLogado?.email}.jpeg")
+            ?.child("${usuarioPerfil?.email}.jpeg")
             ?.child("perfil.jpeg")
 
         val uploadTask = imagemRef?.putBytes(dadosImagem)
@@ -102,13 +118,10 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
-    fun atualizarFotoUsuario(url: Uri) {
-        val retorno = UsuarioFirebase.atualizarFotoUsuario(url)
-        if (retorno) {
-            usuarioLogado?.caminhoFoto = url.toString()
-            usuarioLogado?.atualizar()
-            Notificador.showToast("Sucesso ao alterar sua foto")
-        }
+    fun atualizarFotoUsuario(url: Uri,  email: String) {
+
+        val storageRef = FirebaseStorage.getInstance().getReference("imagens/perfil/$email.jpeg/perfil.jpeg")
+        storageRef.putFile(url).addOnSuccessListener {}.addOnFailureListener {}
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -146,35 +159,28 @@ class PerfilActivity : AppCompatActivity() {
         usuarioRepository.getUsuario(idUsuario) { usuario ->
             if (usuario != null) {
                 binding.editNomeUsuario.setText(usuario.nome)
-                binding.editCadastroEmail.setText(usuario.email)
                 binding.editCadastroTelefone.setText(usuario.telefone)
                 binding.editCadastroCep.setText(usuario.cep)
                 binding.editCadastroMunicipio.setText(usuario.municipio)
                 binding.editCadastroBairro.setText(usuario.bairro)
                 binding.editCadastroLogradouro.setText(usuario.logradouro)
                 binding.editCadastroUf.setText(usuario.estado)
+                binding.editCadastroOcupacao.setText(usuario.ocupacao)
+                binding.editCadastroSexo.setText(usuario.sexo)
                 binding.editCadastroNascimento.setText(usuario.dataNascimento?.let {
                     Utils.formatDate(
                         it, "dd/MM/yyyy")
                 })
 
-                binding.spinnerSexo.adapter = ArrayAdapter(
-                    this,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    listOf(usuario.sexo)
-                )
-                binding.spinnerOcupacao.adapter = ArrayAdapter(
-                    this,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    listOf(usuario.ocupacao)
-                )
+                UtilsView.setShowComponents(View.GONE, binding.containerSpinner, binding.buttonCadastrar, binding.buscarCep)
+
             } else {
                 binding.textNomeUsuarioPerfil.text = "usuario não encontrado"
             }
         }
 
         usuarioLogado = Usuario()
-        binding.textNomeUsuarioPerfil.text = usuarioPerfil.displayName
+        binding.textNomeUsuarioPerfil.text = usuarioPerfil!!.displayName
         binding.textEmailUsuarioLogado.text = usuarioPerfil.email
 
     }
@@ -188,13 +194,112 @@ class PerfilActivity : AppCompatActivity() {
         )
     }
 
+    val aoClicarAlterarDados = View.OnClickListener {
+        UtilsView.setEditTextsEnabled(true, binding.linearPerfil, binding.linearCep, binding.linearEstado)
+        UtilsView.setShowComponents(View.VISIBLE, binding.containerSpinner, binding.buttonCadastrar, binding.buscarCep)
+        UtilsView.setShowComponents(View.GONE, binding.inputCadastroSexo, binding.inputCadastroOcupacao)
+    }
 
     private fun inicializarObjetos() {
-        storageReference = Configuracaofirebase.getFirebaseStorage()
+        storageReference = Configuracaofirebase.firebaseStorage
         usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado()
         identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario()
 
         binding.imageAlterarFoto.setOnClickListener(aoClicarImageAlterarFoto)
+        binding.buttonAlterarDados.setOnClickListener(aoClicarAlterarDados)
+        binding.buscarCep.setOnClickListener {buscarCep(binding.editCadastroCep.text.toString())}
+        binding.buttonCadastrar.setOnClickListener{atualizarDados()}
 
+    }
+
+    fun preencherSpinner() {
+
+        val ocupacoes = arrayOf("Selecione sua ocupação", "Morador", "Catador", "Cooperativa")
+        val adapterOcupacao = ArrayAdapter(this, android.R.layout.simple_spinner_item, ocupacoes)
+        adapterOcupacao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerOcupacao.adapter = adapterOcupacao
+
+        val sexos = arrayOf("Informe seu sexo", "Masculino", "Feminino", "Não quero informar")
+        val adapterSexo = ArrayAdapter(this, android.R.layout.simple_spinner_item, sexos)
+        adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerSexo.adapter = adapterSexo
+
+    }
+
+    private fun buscarCep(cep: String) {
+        lifecycleScope.launch {
+            val endereco = CepApi.buscaCep(cep)
+
+            if (endereco != null) {
+                binding.editCadastroLogradouro.setText(endereco.logradouro)
+                binding.editCadastroBairro.setText(endereco.bairro)
+                binding.editCadastroMunicipio.setText(endereco.cidade)
+                binding.editCadastroUf.setText(endereco.estado)
+            } else {
+                Notificador.showToast("CEP inválido ou não encontrado.")
+            }
+        }
+    }
+
+    private fun atualizarDados() {
+
+        val textoNome = binding.editNomeUsuario.text.toString()
+        val textoCep = binding.editCadastroCep.text.toString()
+        val textoMunicipio = binding.editCadastroMunicipio.text.toString()
+        val textoEstado = binding.editCadastroUf.text.toString()
+        val textoLogradouro = binding.editCadastroLogradouro.text.toString()
+        val textoBairro = binding.editCadastroBairro.text.toString()
+        val textoTelefone = binding.editCadastroTelefone.text.toString()
+        val dataNascimento = binding.editCadastroNascimento.text.toString()
+        val textoSexo = binding.spinnerSexo.selectedItem.toString()
+        val textoOcupacao = binding.spinnerOcupacao.selectedItem.toString()
+
+        val validator = Validator()
+
+        validator.addDateValidator(binding.editCadastroNascimento, "Data de nascimento inválida!", true)
+        validator.addNameValidator(binding.editNomeUsuario, "Nome Inválido, informe seu nome e sobrenome!", true)
+        validator.addPhoneNumberValidator(binding.editCadastroTelefone, "Campo obrigatório", true)
+        validator.addRequiredFieldValidator(binding.editCadastroCep, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroBairro, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroMunicipio, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroUf, "Campo obrigatório")
+        validator.addRequiredFieldValidator(binding.editCadastroLogradouro, "Campo obrigatório")
+        validator.addSpinnerValidator(binding.spinnerOcupacao, this, "Informe sua ocupação!")
+        validator.addSpinnerValidator(binding.spinnerSexo, this, "Informe seu sexo!")
+
+        if (validator.validateFields()) {
+           val  usuario = Usuario()
+            usuario.nome = textoNome
+            usuario.cep = textoCep
+            usuario.municipio = textoMunicipio
+            usuario.bairro = textoBairro
+            usuario.logradouro = textoLogradouro
+            usuario.estado = textoEstado
+            usuario.telefone = textoTelefone
+            usuario.dataNascimento = Utils.stringToDate(dataNascimento)
+            usuario.sexo = textoSexo
+            usuario.ocupacao = textoOcupacao
+            UsuarioFirebase.atualizarNomeUsuario(textoNome)
+
+            binding.progressBarCadastro.visibility = View.VISIBLE
+            binding.buttonCadastrar.text = ""
+            usuario.atualizar { task ->
+                if (task.isSuccessful) {
+                    Notificador.showToast("Atualização realizada com sucesso!")
+                    finish()
+                } else {
+                    Notificador.showToast("Erro ao atualizar os dados: " + task.exception?.message)
+                    binding.progressBarCadastro.visibility = View.GONE
+                    binding.buttonCadastrar.text = getString(R.string.salvar)
+                }
+            }
+
+        }
+    }
+
+    fun adicionarMascaras() {
+        Utils.addMaskToEditText(binding.editCadastroNascimento, "##/##/####")
+        Utils.addMaskToEditText(binding.editCadastroTelefone, "(##) #####-####")
+        Utils.addMaskToEditText(binding.editCadastroCep, "#####-###")
     }
 }

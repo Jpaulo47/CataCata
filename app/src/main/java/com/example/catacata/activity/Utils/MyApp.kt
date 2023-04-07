@@ -4,7 +4,7 @@ import android.app.Application
 /**
  * A classe MyApp é uma subclasse de Application que você pode criar para obter o contexto da
  * aplicação e usá-lo em outros pontos do aplicativo.
- * create by João paulo - 28/02/2023
+ * create by João paulo - 28/03/2023
  */
 
 class MyApp : Application() {

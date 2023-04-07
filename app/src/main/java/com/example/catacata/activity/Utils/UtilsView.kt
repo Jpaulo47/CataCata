@@ -3,6 +3,9 @@ package com.example.utils
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 /**
  * Classe utilitária para operações com Views
@@ -69,4 +72,25 @@ object UtilsView {
         val view = activity.currentFocus ?: View(activity)
         view.clearFocus()
     }
+
+    /**
+     * Desabilita todos os EditText passando o layout pai
+     */
+    fun setEditTextsEnabled(enabled: Boolean, vararg parentViews: ViewGroup) {
+        for (parentView in parentViews) {
+            for (i in 0 until parentView.childCount) {
+                val childView = parentView.getChildAt(i)
+                if (childView is EditText || childView is TextInputEditText) {
+                    childView.isEnabled = enabled
+                } else if (childView is TextInputLayout) {
+                    // Desabilita o TextInputLayout, mas habilita o campo de texto interno
+                    childView.isEnabled = enabled
+                    childView.getChildAt(0).isEnabled = true
+                }
+            }
+        }
+    }
+
+
+
 }

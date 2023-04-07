@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menuInfoApp"
-        android:title="@string/informa_es_do_app"
+    <item android:id="@+id/menu_editar_perfil"
+        android:title="@string/editar_perfil"
         app:showAsAction="never"
         />
     <item android:id="@+id/menuSair"

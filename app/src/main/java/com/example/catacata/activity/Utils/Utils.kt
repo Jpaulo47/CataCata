@@ -297,6 +297,12 @@ object Utils {
         editText.addTextChangedListener(textWatcher)
     }
 
+    /**
+     * Converte uma String em formato de data no padrão definido por DATE_FORMAT para um objeto Date.
+     * @param dateString a String que representa a data a ser convertida.
+     * @return o objeto Date correspondente à data representada pela String, ou null se a conversão falhar.
+     */
+
     fun stringToDate(dateString: String): Date? {
         val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
         return try {

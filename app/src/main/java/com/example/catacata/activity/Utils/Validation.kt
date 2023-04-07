@@ -46,7 +46,7 @@ class Validator {
             return if (isRequired) {
                 field.text.isNotBlank()
             } else {
-                true // não é obrigatório, então sempre retorna true
+                true
             }
         }
 
@@ -312,7 +312,5 @@ class Validator {
     fun addSpinnerValidator(spinner: Spinner, context: Context, errorMessage: String) {
         addFieldValidator(spinner, SpinnerValidator(spinner, context,  errorMessage))
     }
-
-
 
 }

@@ -1,157 +1,134 @@
-package com.example.catacata.activity.activity;
+package com.example.catacata.activity.activity
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.catacata.R
+import com.example.catacata.activity.fragments.AgendamentoFragment
+import com.example.catacata.activity.fragments.AjudaFragment
+import com.example.catacata.activity.fragments.ContatosFragment
+import com.example.catacata.activity.fragments.HomeFragment
+import com.example.catacata.activity.helper.Configuracaofirebase
+import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
+import de.hdodenhof.circleimageview.CircleImageView
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+class MainActivity : AppCompatActivity() {
+    private lateinit var autenticacao: FirebaseAuth
+    private lateinit var binding: ActivityMainBinding
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.catacata.R;
-import com.example.catacata.activity.fragments.AgendamentoFragment;
-import com.example.catacata.activity.fragments.AjudaFragment;
-import com.example.catacata.activity.fragments.ContatosFragment;
-import com.example.catacata.activity.fragments.HomeFragment;
-import com.example.catacata.activity.helper.Configuracaofirebase;
-import com.example.catacata.activity.helper.UsuarioFirebase;
-import com.example.catacata.databinding.ActivityMainBinding;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+    @SuppressLint("ResourceAsColor", "NonConstantResourceId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-import de.hdodenhof.circleimageview.CircleImageView;
+        // configuração de objetos
+        autenticacao = Configuracaofirebase.referenciaAutenticacao!!
 
-public class MainActivity extends AppCompatActivity {
+        configurarToolbar()
+        substituirFragment(HomeFragment())
+        configurarBottonNavigation()
 
-    private FirebaseAuth autenticacao;
-    ActivityMainBinding binding;
+        val circleImageImagePerfil = findViewById<CircleImageView>(R.id.circleImageToolbar)
+        circleImageImagePerfil.setOnClickListener {
+            abrirTelaMeuPerfil()
 
-    @SuppressLint({"ResourceAsColor", "NonConstantResourceId"})
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        }
+    }
 
-        //configuração de objetos
-        autenticacao = Configuracaofirebase.getReferenciaAutenticacao();
+    private fun configurarToolbar() {
+        val toolbar = findViewById<Toolbar>(R.id.toolbarPrincipal)
+        toolbar.title = ""
+        setSupportActionBar(toolbar)
+    }
 
-        //Configuração da toolbar
-        Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        substituirFragment(new HomeFragment());
-
-        //Configuração do botton navigation
-        binding.bottonNavigation.setOnItemSelectedListener(item -> {
-
-            switch (item.getItemId()){
-
-                case R.id.menuHome:
-                    substituirFragment(new HomeFragment());
-                    break;
-                case R.id.menuContatos:
-                    substituirFragment(new ContatosFragment());
-                    break;
-                case R.id.menuAgendamento:
-                    substituirFragment(new AgendamentoFragment());
-                    break;
-                case R.id.menuAjuda:
-                    substituirFragment(new AjudaFragment());
-                    break;
-
+    private fun configurarBottonNavigation() {
+        binding.bottonNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menuHome -> substituirFragment(HomeFragment())
+                R.id.menuContatos -> substituirFragment(ContatosFragment())
+                R.id.menuAgendamento -> substituirFragment(AgendamentoFragment())
+                R.id.menuAjuda -> substituirFragment(AjudaFragment())
             }
-
-            return true;
-        });
-
-        //Adicionando método de click na imagem de perfil
-        binding.include.circleImageToolbar.setOnClickListener(view -> {
-
-            Intent intent = new Intent(MainActivity.this, PerfilActivity.class);
-            startActivity( intent );
-        });
-
+            true
+        }
     }
 
-    private void substituirFragment(Fragment fragment){
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_Layout, fragment);
-        fragmentTransaction.commit();
+    private fun substituirFragment(fragment: Fragment) {
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_Layout, fragment)
+        fragmentTransaction.commit()
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()){
-            case R.id.menuSair:
-                deslogarUsuario();
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                break;
-            case R.id.menuInfoApp:
-
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuSair -> {
+                deslogarUsuario()
+                startActivity(Intent(applicationContext, LoginActivity::class.java))
+            }
+            R.id.menu_editar_perfil -> {
+                abrirTelaMeuPerfil()
+            }
         }
-
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    public void deslogarUsuario(){
+    fun deslogarUsuario() {
         try {
-            autenticacao.signOut();
-        }catch (Exception e){
-            e.printStackTrace();
+            autenticacao.signOut()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
     }
 
-    public void abrirTelaMeusMateriais(View view){
-        Intent intent = new Intent(MainActivity.this, MeusMateriaisActivity.class);
-        startActivity( intent );
+    fun abrirTelaMeusMateriais(view: View) {
+        val intent = Intent(this, MeusMateriaisActivity::class.java)
+        startActivity(intent)
     }
 
-    public void abrirTelaInfoSeguranca(View view){
-        Intent intent = new Intent(MainActivity.this, InfoSegurancaActivity.class);
-        startActivity( intent );
+    fun abrirTelaInfoSeguranca(view: View) {
+        val intent = Intent(this, InfoSegurancaActivity::class.java)
+        startActivity(intent)
     }
 
-    @Override
-    protected void onResume() {
-        atualizarImagePerfil();
-        super.onResume();
+    private fun abrirTelaMeuPerfil() {
+        val intent = Intent(this, PerfilActivity::class.java)
+        startActivity(intent)
     }
 
-    private void atualizarImagePerfil(){
-        CircleImageView circleImageImagePerfil = findViewById(R.id.circleImageToolbar);
-        UsuarioFirebase.getUriImagemPerfil(uri -> Glide.with(MainActivity.this)
-                        .load( uri )
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .priority(Priority.HIGH)
-                        .into( circleImageImagePerfil ),
-                e -> circleImageImagePerfil.setImageResource(R.drawable.padrao));
+    override fun onResume() {
+        atualizarImagePerfil()
+        super.onResume()
+    }
+
+    private fun atualizarImagePerfil() {
+        val usuarioFirebase = UsuarioFirebase
+        val circleImageImagePerfil = findViewById<CircleImageView>(R.id.circleImageToolbar)
+        usuarioFirebase.getUriImagemPerfil({ uri ->
+            Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH).into(circleImageImagePerfil)
+        }, { e -> circleImageImagePerfil.setImageResource(R.drawable.padrao) })
     }
 }

@@ -1,39 +1,47 @@
-package com.example.catacata.activity.helper;
+package com.example.catacata.activity.helper
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
-public class Configuracaofirebase {
+/**
+ * Classe singleton para configuração do Firebase.
+ * create by João Paulo - 03/10/2022
+ * Retorna a instância do FirebaseAuth, FirebaseStorage & FirebaseDatabase.
+ */
 
-    private static DatabaseReference referenciaFirebase;
-    private static FirebaseAuth referenciaAutenticacao;
-    private static StorageReference storage;
-
-    //retorna a referencia do database
-    public static DatabaseReference getFirebase(){
-        if ( referenciaFirebase == null ){
-            referenciaFirebase = FirebaseDatabase.getInstance().getReference();
-        }
-        return referenciaFirebase;
-    }
+object Configuracaofirebase {
+    private var referenciaFirebase: DatabaseReference? = null
 
     //retorna instancia do fitebaseAuth
-    public static FirebaseAuth getReferenciaAutenticacao(){
-        if (referenciaAutenticacao == null ){
-            referenciaAutenticacao = FirebaseAuth.getInstance();
+    @JvmStatic
+    var referenciaAutenticacao: FirebaseAuth? = null
+        get() {
+            if (field == null) {
+                field = FirebaseAuth.getInstance()
+            }
+            return field
         }
-        return referenciaAutenticacao;
-    }
+        private set
+    private var storage: StorageReference? = null
+
+    //retorna a referencia do database
+    val firebase: DatabaseReference?
+        get() {
+            if (referenciaFirebase == null) {
+                referenciaFirebase = FirebaseDatabase.getInstance().reference
+            }
+            return referenciaFirebase
+        }
 
     //retorna a instancia do storage
-    public static StorageReference getFirebaseStorage(){
-        if ( storage == null ){
-            storage = FirebaseStorage.getInstance().getReference();
+    val firebaseStorage: StorageReference?
+        get() {
+            if (storage == null) {
+                storage = FirebaseStorage.getInstance().reference
+            }
+            return storage
         }
-        return storage;
-    }
-
 }
