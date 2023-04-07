@@ -38,7 +38,7 @@ class CadastroActivity : AppCompatActivity() {
 
     private var usuario: Usuario? = null
     private val PICK_IMAGE_REQUEST = 1
-    private var imageUri: Uri? = null // Variável de classe para armazenar a URI da imagem selecionada
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,10 +173,10 @@ class CadastroActivity : AppCompatActivity() {
 
     fun cadastrar(usuario: Usuario) {
         binding.progressBarCadastro.visibility = View.VISIBLE
-        val autenticacao = Configuracaofirebase.getReferenciaAutenticacao()
+        val autenticacao = Configuracaofirebase.referenciaAutenticacao
 
-        autenticacao.createUserWithEmailAndPassword(
-            usuario.email, usuario.senha
+        autenticacao!!.createUserWithEmailAndPassword(
+            usuario.email.toString(), usuario.senha.toString()
         ).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val intent = Intent(this, MainActivity::class.java).apply {
@@ -186,11 +186,11 @@ class CadastroActivity : AppCompatActivity() {
 
                 binding.progressBarCadastro.visibility = View.GONE
                 showToast("Cadastro com sucesso")
-                UsuarioFirebase.atualizarNomeUsuario(usuario.nome)
+                UsuarioFirebase.atualizarNomeUsuario(usuario.nome.toString())
                 finish()
 
                 try {
-                    val identificadorUsuario = Base64Custom.codificarBase64(usuario.email)
+                    val identificadorUsuario = Base64Custom.codificarBase64(usuario.email.toString())
                     usuario.id = identificadorUsuario
                     usuario.salvar()
                 } catch (e: Exception) {
