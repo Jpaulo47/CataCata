@@ -3,6 +3,7 @@ package com.example.catacata.activity.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -20,8 +21,8 @@ import com.example.catacata.activity.fragments.AgendamentoFragment
 import com.example.catacata.activity.fragments.AjudaFragment
 import com.example.catacata.activity.fragments.ContatosFragment
 import com.example.catacata.activity.fragments.HomeFragment
-import com.example.catacata.activity.helper.Configuracaofirebase
-import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.activity.helper.FirebaseConfig
+import com.example.catacata.activity.helper.UserFirebase
 import com.example.catacata.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // configuração de objetos
-        autenticacao = Configuracaofirebase.referenciaAutenticacao!!
+        autenticacao = FirebaseConfig.referenciaAutenticacao!!
 
         configurarToolbar()
         substituirFragment(HomeFragment())
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun atualizarImagePerfil() {
-        val usuarioFirebase = UsuarioFirebase
+        val usuarioFirebase = UserFirebase
         val circleImageImagePerfil = findViewById<CircleImageView>(R.id.circleImageToolbar)
         usuarioFirebase.getUriImagemPerfil({ uri ->
             Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)

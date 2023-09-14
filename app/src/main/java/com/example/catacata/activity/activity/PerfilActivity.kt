@@ -4,32 +4,24 @@ import Notificador
 import UsuarioRepository
 import Validator
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginTop
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.catacata.R
-import com.example.catacata.activity.helper.Configuracaofirebase
-import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.activity.helper.FirebaseConfig
+import com.example.catacata.activity.helper.UserFirebase
 import com.example.catacata.activity.model.Usuario
 import com.example.catacata.databinding.ActivityPerfilBinding
 import com.example.utils.UtilsView
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
@@ -62,7 +54,7 @@ class PerfilActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
+        val usuarioPerfil = UserFirebase.getUsuarioAtual()
         if (resultCode != RESULT_OK) {
             return
         }
@@ -97,7 +89,7 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     private fun uploadImagem(dadosImagem: ByteArray, onUploadComplete: (Uri) -> Unit) {
-        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
+        val usuarioPerfil = UserFirebase.getUsuarioAtual()
         val imagemRef = storageReference
             ?.child("imagens")
             ?.child("perfil")
@@ -134,7 +126,7 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     fun atualizarImagemPerfil(){
-        UsuarioFirebase.getUriImagemPerfil({ uri: Uri? ->
+        UserFirebase.getUriImagemPerfil({ uri: Uri? ->
             Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .priority(Priority.HIGH).into(binding.circleImageToolbar)
         }) { e: Exception? -> binding.circleImageToolbar.setImageResource(R.drawable.padrao) }
@@ -152,10 +144,10 @@ class PerfilActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     fun setarInfoView(){
 
-        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
+        val usuarioPerfil = UserFirebase.getUsuarioAtual()
 
         val usuarioRepository = UsuarioRepository()
-        val idUsuario = UsuarioFirebase.getIdentificadorUsuario()
+        val idUsuario = UserFirebase.getIdentificadorUsuario()
         usuarioRepository.getUsuario(idUsuario) { usuario ->
             if (usuario != null) {
                 binding.editNomeUsuario.setText(usuario.nome)
@@ -201,9 +193,9 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     private fun inicializarObjetos() {
-        storageReference = Configuracaofirebase.firebaseStorage
-        usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado()
-        identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario()
+        storageReference = FirebaseConfig.firebaseStorage
+        usuarioLogado = UserFirebase.getDadosUsuarioLogado()
+        identificadorUsuario = UserFirebase.getIdentificadorUsuario()
 
         binding.imageAlterarFoto.setOnClickListener(aoClicarImageAlterarFoto)
         binding.buttonAlterarDados.setOnClickListener(aoClicarAlterarDados)
@@ -279,7 +271,7 @@ class PerfilActivity : AppCompatActivity() {
             usuario.dataNascimento = Utils.stringToDate(dataNascimento)
             usuario.sexo = textoSexo
             usuario.ocupacao = textoOcupacao
-            UsuarioFirebase.atualizarNomeUsuario(textoNome)
+            UserFirebase.atualizarNomeUsuario(textoNome)
 
             binding.progressBarCadastro.visibility = View.VISIBLE
             binding.buttonCadastrar.text = ""

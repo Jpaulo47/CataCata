@@ -1,14 +1,12 @@
 package com.example.catacata.activity.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.catacata.R
-import com.example.catacata.activity.helper.UsuarioFirebase
-import com.example.catacata.databinding.ActivityDetalhesInfoBinding
+import com.example.catacata.activity.helper.UserFirebase
 import com.example.catacata.databinding.ActivityInfoSegurancaBinding
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -32,7 +30,7 @@ class InfoSegurancaActivity : AppCompatActivity() {
 
         //Recuperando dados do usuario no firebaseUser
         val circleImageToolbarAlternativa = findViewById<CircleImageView>(R.id.circleImageToolbar)
-        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
+        val usuarioPerfil = UserFirebase.getUsuarioAtual()
         val url = usuarioPerfil!!.photoUrl
         if (url != null) {
             Glide.with(this ).load(url).into(circleImageToolbarAlternativa)

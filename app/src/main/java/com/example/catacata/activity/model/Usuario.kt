@@ -1,7 +1,7 @@
 package com.example.catacata.activity.model
 
-import com.example.catacata.activity.helper.Configuracaofirebase
-import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.activity.helper.FirebaseConfig
+import com.example.catacata.activity.helper.UserFirebase
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.Exclude
 import java.io.Serializable
@@ -27,14 +27,14 @@ class Usuario : Serializable {
     var dataNascimento: Date? = null
 
     fun salvar() {
-        val firebaseRef = Configuracaofirebase.firebase
+        val firebaseRef = FirebaseConfig.firebase
         val usuario = firebaseRef?.child("usuarios")!!.child(id!!)
         usuario.setValue(this)
     }
 
     fun atualizar(listener: OnCompleteListener<Void?>?) {
-        val identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario()
-        val database = Configuracaofirebase.firebase
+        val identificadorUsuario = UserFirebase.getIdentificadorUsuario()
+        val database = FirebaseConfig.firebase
         val usuariosRef = database!!.child("usuarios")
             .child(identificadorUsuario)
         val valoresUsuario: Map<String, Any?> = converterParaMap()

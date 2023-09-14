@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.example.catacata.R
-import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.activity.helper.UserFirebase
 import com.example.catacata.databinding.ActivityDetalhesInfoBinding
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -28,7 +28,7 @@ class DetalhesInfoActivity : AppCompatActivity() {
 
         //Recuperando dados do usuario no firebaseUser
         val circleImageToolbarAlternativa = findViewById<CircleImageView>(R.id.circleImageToolbar)
-        val usuarioPerfil = UsuarioFirebase.getUsuarioAtual()
+        val usuarioPerfil = UserFirebase.getUsuarioAtual()
         val url = usuarioPerfil!!.photoUrl
         if (url != null) {
             Glide.with(this).load(url).into(circleImageToolbarAlternativa)

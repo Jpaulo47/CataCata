@@ -11,6 +11,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
@@ -21,8 +22,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.catacata.activity.helper.Base64Custom
-import com.example.catacata.activity.helper.Configuracaofirebase
-import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.activity.helper.FirebaseConfig
+import com.example.catacata.activity.helper.UserFirebase
 import com.example.catacata.activity.model.Usuario
 import com.example.catacata.databinding.ActivityCadastroBinding
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -173,7 +174,7 @@ class CadastroActivity : AppCompatActivity() {
 
     fun cadastrar(usuario: Usuario) {
         binding.progressBarCadastro.visibility = View.VISIBLE
-        val autenticacao = Configuracaofirebase.referenciaAutenticacao
+        val autenticacao = FirebaseConfig.referenciaAutenticacao
 
         autenticacao!!.createUserWithEmailAndPassword(
             usuario.email.toString(), usuario.senha.toString()
@@ -186,7 +187,7 @@ class CadastroActivity : AppCompatActivity() {
 
                 binding.progressBarCadastro.visibility = View.GONE
                 showToast("Cadastro com sucesso")
-                UsuarioFirebase.atualizarNomeUsuario(usuario.nome.toString())
+                UserFirebase.atualizarNomeUsuario(usuario.nome.toString())
                 finish()
 
                 try {

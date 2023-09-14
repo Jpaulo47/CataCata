@@ -12,7 +12,7 @@ import com.google.firebase.storage.StorageReference
  * Retorna a instância do FirebaseAuth, FirebaseStorage & FirebaseDatabase.
  */
 
-object Configuracaofirebase {
+object FirebaseConfig {
     private var referenciaFirebase: DatabaseReference? = null
 
     //retorna instancia do fitebaseAuth

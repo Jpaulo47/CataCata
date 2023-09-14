@@ -3,10 +3,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/fundoPadrao"
     android:orientation="vertical"
     tools:context=".activity.activity.MeusMateriaisActivity">
 
-    <include layout="@layout/toolbar_alternativa" />
+    <include
+        android:id="@+id/include4"
+        layout="@layout/toolbar_alternativa" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/background_caixa_texto"
+        android:backgroundTint="#C1C9B5"
+        android:backgroundTintMode="src_over"
+        android:buttonTint="@color/verdeIcons"
+        android:buttonTintMode="add"
+        android:drawableLeft="@drawable/ic_notifications"
+        android:drawablePadding="10dp"
+        android:drawingCacheQuality="low"
+        android:foregroundTint="@color/verdeIcons"
+        android:foregroundTintMode="src_in"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:text="Receber notificações"
+        android:textColor="#314E1C"
+        android:textSize="16sp"
+        android:thumbTint="@color/verdeIcons"
+        android:thumbTintMode="src_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include4"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="24dp"
+        app:errorEnabled="true"
+        android:hint="TEXTO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/switch1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/texto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

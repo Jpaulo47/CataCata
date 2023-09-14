@@ -16,34 +16,31 @@ import java.util.*
  * create by João Paulo - 03/10/2022
  */
 
-object UsuarioFirebase {
+object UserFirebase {
 
     /**
      * Retorna o identificador do usuário atual codificado em Base64.
-     *
      * @return O identificador do usuário atual codificado em Base64.
      */
 
     fun getIdentificadorUsuario(): String {
-        val usuario = Configuracaofirebase.referenciaAutenticacao
+        val usuario = FirebaseConfig.referenciaAutenticacao
         val email = usuario!!.currentUser!!.email
         return Base64Custom.codificarBase64(email.toString())
     }
 
     /**
      * Retorna o objeto FirebaseUser que representa o usuário atualmente autenticado.
-     *
      * @return O objeto FirebaseUser que representa o usuário atualmente autenticado.
      */
 
     fun getUsuarioAtual(): FirebaseUser? {
-        val usuario = Configuracaofirebase.referenciaAutenticacao
+        val usuario = FirebaseConfig.referenciaAutenticacao
         return usuario!!.currentUser
     }
 
     /**
      * Recupera a URL da imagem de perfil do usuário atual no Firebase Storage e chama o listener de sucesso ou falha.
-     *
      * @param successListener O listener que será chamado com a URL da imagem de perfil se a operação for bem-sucedida.
      * @param failureListener O listener que será chamado se ocorrer um erro durante a operação.
      */
@@ -58,7 +55,6 @@ object UsuarioFirebase {
 
     /**
      * Atualiza o nome do usuário atual no Firebase Authentication.
-     *
      * @param nome O novo nome do usuário.
      * @return true se a operação for bem-sucedida, false caso contrário.
      */
@@ -102,7 +98,6 @@ object UsuarioFirebase {
 
     /**
      * Retorna um objeto Usuario que contém os dados do usuário atualmente autenticado.
-     *
      * @return Um objeto Usuario que contém os dados do usuário atualmente autenticado.
      */
 

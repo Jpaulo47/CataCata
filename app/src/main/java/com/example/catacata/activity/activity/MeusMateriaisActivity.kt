@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.example.catacata.R
-import com.example.catacata.activity.helper.UsuarioFirebase
+import com.example.catacata.activity.helper.UserFirebase
 import com.example.catacata.databinding.ActivityMeusMateriaisBinding
 import com.google.firebase.auth.FirebaseUser
 import de.hdodenhof.circleimageview.CircleImageView
@@ -36,7 +36,7 @@ class MeusMateriaisActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val usuarioPerfil: FirebaseUser? = UsuarioFirebase.getUsuarioAtual()
+        val usuarioPerfil: FirebaseUser? = UserFirebase.getUsuarioAtual()
         val url: Uri? = usuarioPerfil?.photoUrl
         if (url != null) {
             Glide.with(this).load(url).into(circleImageToolbarAlternativa)
@@ -48,5 +48,15 @@ class MeusMateriaisActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean { // método para finalizar activity atual
         finish()
         return false
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (!binding.switch1.isChecked){
+            binding.textField.error = "fhfdshfd hgdfshgdfhdgt gdjgtfdjgfjgf gfjgfdjgf fgjfg jgfjgfj td jfgd jgfj "
+        }else{
+            binding.textField.error == null
+        }
     }
 }
